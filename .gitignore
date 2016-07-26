@@ -1,0 +1,6 @@
+# do not put dependencies in the repo, only keep the desciptive json
+vendor/*
+!vendor/vendor.json
+
+# dev file
+*swp
