@@ -1,4 +1,4 @@
-package log
+package echo_log
 
 import (
 	"os"
@@ -8,22 +8,26 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-func InitEchoServerLog(e *echo.Echo, prod bool, logFilePath string) error {
-	if prod {
+// configures the echo server to use logrus to log http request
+// on "dev" and "prod" environment it also configures logrus to log into a file
+func InitEchoServerLog(e *echo.Echo, env, projectName string) error {
+	if env == "prod" || env == "dev" {
+		project := projectName + "-" + env
+		logFilePath := "/var/log/" + project + "/" + project + ".log"
 		f, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
 		if err != nil {
 			return err
 		}
-		log.SetLevel(log.InfoLevel)
+		if env == "prod" {
+			log.SetLevel(log.InfoLevel)
+		} else {
+			log.SetLevel(log.DebugLevel)
+		}
 		log.SetFormatter(&log.JSONFormatter{})
 		log.SetOutput(f)
 	} else {
 		log.SetLevel(log.DebugLevel)
 	}
-
-	// forward echo logs to logrus
-	loggerWrapper := LoggerWrapper{log.StandardLogger()}
-	e.SetLogger(loggerWrapper)
 
 	// also retrieve http request logs
 	e.Use(getLogrusMiddlewareHandler())
