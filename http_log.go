@@ -39,7 +39,7 @@ func getLogrusMiddlewareHandler() echo.MiddlewareFunc {
 			fields["path"] = path
 
 			latency := stop.Sub(start)
-			fields["request_latency"] = int64(latency.Nanoseconds() / 1000)
+			fields["request_latency"] = int64(latency.Nanoseconds() / 1000000)
 			fields["request_latency_human"] = latency.String()
 
 			rx := req.Header.Get(echo.HeaderContentLength)
