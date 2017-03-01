@@ -18,7 +18,7 @@ func InitEchoServerLog(e *echo.Echo, env, projectName string) error {
 		if err != nil {
 			return err
 		}
-		if env == "prod" {
+		if env == "prod" || env == "production" {
 			log.SetLevel(log.InfoLevel)
 		} else {
 			log.SetLevel(log.DebugLevel)
