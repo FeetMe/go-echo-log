@@ -11,7 +11,7 @@ import (
 // configures the echo server to use logrus to log http request
 // on "dev" and "prod" environment it also configures logrus to log into a file
 func InitEchoServerLog(e *echo.Echo, env, projectName string) error {
-	if env == "prod" || env == "dev" {
+	if env == "prod" || env == "production" || env == "dev" || env == "development" {
 		project := projectName + "-" + env
 		logFilePath := "/var/log/" + project + "/" + project + ".log"
 		f, err := os.OpenFile(logFilePath, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
